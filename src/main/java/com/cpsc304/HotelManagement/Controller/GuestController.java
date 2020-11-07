@@ -3,7 +3,7 @@ package com.cpsc304.HotelManagement.Controller;
 import com.cpsc304.HotelManagement.DBHandler.GuestHandler;
 import com.cpsc304.HotelManagement.DBHandler.InHouseGuestHandler;
 import com.cpsc304.HotelManagement.DBHandler.ReservationGuestHandler;
-import com.cpsc304.HotelManagement.RequestFormat.DoubleDates;
+import com.cpsc304.HotelManagement.RequestModel.DoubleDates;
 import com.cpsc304.HotelManagement.Model.InHouseGuest;
 import com.cpsc304.HotelManagement.Model.ReservationGuest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,21 +33,31 @@ public class GuestController {
     @PostMapping(value = "/reservation_guest")
     public List<Map<String,Object>> createReservationGuest(@RequestBody Map<String,Object> jsonStr) {
         System.out.println(jsonStr);
+        // Retrieve jsonObject from key
         Map<String, Object> rgm = (Map<String, Object>) (jsonStr.get("reservationGuest"));
         List<Map<String, Object>> guests = (List<Map<String, Object>>) (jsonStr.get("inHouseGuests"));
         Map<String, Object> dates = (Map<String, Object>) (jsonStr.get("date"));
-        DoubleDates dd = mapper.convertValue(dates, DoubleDates.class);
-        if(rgm != null) {
+        if(rgm != null && dates != null) {
+            DoubleDates dd = mapper.convertValue(dates, DoubleDates.class);
             ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
-            SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
-            Date s1 = new Date();
+            /*SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+            Date inDate = new Date();
+            Date outDate = new Date();
             try {
-                s1 = sdf.parse(dd.getInDate());
+                inDate = sdf.parse(dd.getInDate());
+                outDate = sdf.parse(dd.getOutDate());
             } catch (Exception e) {
 
+            }*/
+            String inDate = dd.getInDate();
+            String outDate = dd.getOutDate();
+            Integer numberOfGuests = guests.size() + 1;
+            if (numberOfGuests > 1) {
+                String sql = "";
+            } else {
+
             }
-            System.out.println(s1);
-            System.out.println(rg1.getCredit_card());
+            //
             Integer rid = rh.insertReservationGuest(rg1);
             ArrayList<Integer> gids = new ArrayList<>();
             for (int i = 0; i < guests.size(); i++) {

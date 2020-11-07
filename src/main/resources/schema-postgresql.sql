@@ -86,6 +86,16 @@ CREATE TABLE reserve_with(
     FOREIGN KEY (guest_id) REFERENCES in_house_guest(guest_id) ON DELETE CASCADE
 );
 
+WITH selected_records AS (
+SELECT * FROM
+rm_record rr
+WHERE rr.date >= date'2020-11-17' AND rr.date <= date'2020-11-20' AND rr.last_req is NULL
+)SELECT sr.rm_number AS room_number, room.type, AVG(sr.price) AS price FROM
+selected_records sr, room
+WHERE sr.rm_number = room.rm_number
+GROUP BY sr.rm_number, room.type
+HAVING  COUNT (*) = date'2020-11-20' - date'2020-11-17'+ 1
+
 
 
 

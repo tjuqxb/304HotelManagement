@@ -1,6 +1,4 @@
-package com.cpsc304.HotelManagement.RequestFormat;
-
-import java.util.Date;
+package com.cpsc304.HotelManagement.RequestModel;
 
 public class DoubleDates {
     String inDate;
