@@ -16,10 +16,18 @@ public class GuestHandler {
     @Autowired
     JdbcTemplate jt;
 
-    public void insertGuest(ReservationGuest rg) {
+    public void insertGuest(Guest g) {
+        // auto index
+        String sql1 = "SELECT MAX(guest_id) FROM guest";
+        List<Map<String, Object>> ret = jt.queryForList(sql1);
+        Integer id = (Integer) ret.get(0).get("max");
+        if (id == null) {
+            id = 0;
+        } else {
+            id = id + 1;
+        }
         String sql = "INSERT INTO guest VALUES (?, ?, ?);";
-        Guest g = rg;
-        jt.update(sql, g.getId(), g.getName(), g.getPhone());
+        jt.update(sql, id, g.getName(), g.getPhone());
     }
 
     public List<Map<String, Object>> getAllGuests() {

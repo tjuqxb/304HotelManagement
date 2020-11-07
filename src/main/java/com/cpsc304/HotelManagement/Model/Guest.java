@@ -3,15 +3,15 @@ package com.cpsc304.HotelManagement.Model;
 public class Guest {
     String name;
     String phone;
-    Long id;
+    Long guest_id;
 
     public Guest() {
     }
 
-    public Guest(String name, String phone, Long id) {
+    public Guest(String name, String phone, Long guest_id) {
         this.name = name;
         this.phone = phone;
-        this.id = id;
+        this.guest_id = guest_id;
     }
 
     public String getName() {
@@ -30,11 +30,11 @@ public class Guest {
         this.phone = phone;
     }
 
-    public Long getId() {
-        return id;
+    public Long getGuest_id() {
+        return guest_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGuest_id(Long guest_id) {
+        this.guest_id = guest_id;
     }
 }

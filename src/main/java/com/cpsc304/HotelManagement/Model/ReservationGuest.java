@@ -1,33 +1,37 @@
 package com.cpsc304.HotelManagement.Model;
 
 public class ReservationGuest extends Guest{
-        String creditCard;
-        String photoID;
+        String credit_card;
+        String photo_identity;
         String email;
         String membership;
 
-    public ReservationGuest(String name, String phone, Long id, String creditCard, String photoID, String email, String membership) {
+    public ReservationGuest(String name, String phone, Long id, String credit_card, String photoID, String email, String membership) {
         super(name, phone, id);
-        this.creditCard = creditCard;
-        this.photoID = photoID;
+        this.credit_card = credit_card;
+        this.photo_identity = photoID;
         this.email = email;
         this.membership = membership;
     }
 
-    public String getCreditCard() {
-        return creditCard;
+    public ReservationGuest() {
+
     }
 
-    public void setCreditCard(String creditCard) {
-        this.creditCard = creditCard;
+    public String getCredit_card() {
+        return credit_card;
     }
 
-    public String getPhotoID() {
-        return photoID;
+    public void setCredit_card(String credit_card) {
+        this.credit_card = credit_card;
     }
 
-    public void setPhotoID(String photoID) {
-        this.photoID = photoID;
+    public String getPhoto_identity() {
+        return photo_identity;
+    }
+
+    public void setPhoto_identity(String photo_identity) {
+        this.photo_identity = photo_identity;
     }
 
     public String getEmail() {

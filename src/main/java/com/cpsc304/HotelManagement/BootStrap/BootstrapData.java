@@ -32,7 +32,8 @@ public class BootstrapData implements CommandLineRunner{
     public void run(String... args) throws Exception {
         createDefaultDB(dataSource);
         ReservationGuest rg = new ReservationGuest("1","2",3L,"4","5","6","7");
-        rh.insertReservationGuest(rg);
+        gh.insertGuest(rg);
+        gh.insertGuest(rg);
        // System.out.println(gh.getAllGuests());
     }
 }

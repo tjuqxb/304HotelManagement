@@ -2,11 +2,11 @@ package com.cpsc304.HotelManagement.Controller;
 
 import com.cpsc304.HotelManagement.DBHandler.GuestHandler;
 import com.cpsc304.HotelManagement.DBHandler.ReservationGuestHandler;
+import com.cpsc304.HotelManagement.Model.ReservationGuest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +20,18 @@ public class GuestController {
     ReservationGuestHandler rh;
     @Autowired
     GuestHandler gh;
+    final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
 
     @GetMapping(value = "/list")
     public List<Map<String,Object>> getGuests() {
+        return gh.getAllGuests();
+    }
+
+    @PostMapping(value = "/reservation_guest")
+    public List<Map<String,Object>> createReservationGuest(@RequestBody Map<String,Object> jsonStr) {
+        Map<String, Object> rgm = (Map<String, Object>) jsonStr.get("reservationGuest");
+        ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
+        rh.insertReservationGuest(rg1);
         return gh.getAllGuests();
     }
 }
