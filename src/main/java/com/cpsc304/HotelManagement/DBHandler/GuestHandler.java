@@ -16,7 +16,7 @@ public class GuestHandler {
     @Autowired
     JdbcTemplate jt;
 
-    public void insertGuest(Guest g) {
+    public Integer insertGuest(Guest g) {
         // auto index
         String sql1 = "SELECT MAX(guest_id) FROM guest";
         List<Map<String, Object>> ret = jt.queryForList(sql1);
@@ -28,6 +28,7 @@ public class GuestHandler {
         }
         String sql = "INSERT INTO guest VALUES (?, ?, ?);";
         jt.update(sql, id, g.getName(), g.getPhone());
+        return id;
     }
 
     public List<Map<String, Object>> getAllGuests() {

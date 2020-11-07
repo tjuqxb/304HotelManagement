@@ -14,7 +14,7 @@ public class ReservationGuestHandler {
     @Autowired
     JdbcTemplate jt;
 
-    public void insertReservationGuest(ReservationGuest rg) {
+    public Integer insertReservationGuest(ReservationGuest rg) {
         String sql1 = "SELECT MAX(guest_id) FROM guest";
         List<Map<String, Object>> ret = jt.queryForList(sql1);
         Integer id = (Integer) ret.get(0).get("max");
@@ -28,6 +28,7 @@ public class ReservationGuestHandler {
         jt.update(sql, id,g.getName(), g.getPhone());
         String sql2 = "INSERT INTO reservation_guest VALUES (?, ?, ?, ?, ?);";
         jt.update(sql2, id, rg.getCredit_card(),rg.getPhoto_identity(),rg.getEmail(), rg.getMembership());
+        return id;
     }
 
 

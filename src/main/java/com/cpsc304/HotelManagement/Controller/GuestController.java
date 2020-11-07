@@ -31,7 +31,7 @@ public class GuestController {
     public List<Map<String,Object>> createReservationGuest(@RequestBody Map<String,Object> jsonStr) {
         Map<String, Object> rgm = (Map<String, Object>) jsonStr.get("reservationGuest");
         ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
-        rh.insertReservationGuest(rg1);
+        Integer rid = rh.insertReservationGuest(rg1);
         return gh.getAllGuests();
     }
 }
