@@ -15,7 +15,6 @@ public class ReservationGuest extends Guest{
     }
 
     public ReservationGuest() {
-
     }
 
     public String getCredit_card() {
