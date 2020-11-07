@@ -30,8 +30,11 @@ public class GuestController {
     @PostMapping(value = "/reservation_guest")
     public List<Map<String,Object>> createReservationGuest(@RequestBody Map<String,Object> jsonStr) {
         Map<String, Object> rgm = (Map<String, Object>) jsonStr.get("reservationGuest");
-        ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
-        Integer rid = rh.insertReservationGuest(rg1);
+        System.out.println(rgm);
+        if(rgm != null) {
+            ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
+            Integer rid = rh.insertReservationGuest(rg1);
+        }
         return gh.getAllGuests();
     }
 }
