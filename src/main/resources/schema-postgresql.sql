@@ -62,8 +62,8 @@ CREATE TABLE reservation_req(
     req_status INT NOT NULL,
     date DATE NOT NULL,
     rm_number INT NOT NULL,
+    UNIQUE (guest_id, date),
     PRIMARY KEY (rid),
-    UNIQUE (guest_id, m_date, m_time),
     FOREIGN KEY (guest_id) REFERENCES reservation_guest(guest_id)
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE rm_record(
     last_req INT,
     PRIMARY KEY (rm_number, date),
     FOREIGN KEY (rm_number) REFERENCES room(rm_number),
-    FOREIGN KEY (last_req) REFERENCES reservation_req(rid)
+    FOREIGN KEY (last_req) REFERENCES reservation_req(rid) ON DELETE CASCADE
 );
 
 
@@ -86,15 +86,19 @@ CREATE TABLE reserve_with(
     FOREIGN KEY (guest_id) REFERENCES in_house_guest(guest_id) ON DELETE CASCADE
 );
 
-WITH selected_records AS (
+/*WITH selected_records AS (
 SELECT * FROM
 rm_record rr
 WHERE rr.date >= date'2020-11-17' AND rr.date <= date'2020-11-20' AND rr.last_req is NULL
-)SELECT sr.rm_number AS room_number, room.type, AVG(sr.price) AS price FROM
+)SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM
 selected_records sr, room
-WHERE sr.rm_number = room.rm_number
+WHERE sr.rm_number = room.rm_number AND room.status_id = 1
 GROUP BY sr.rm_number, room.type
-HAVING  COUNT (*) = date'2020-11-20' - date'2020-11-17'+ 1
+HAVING  COUNT (*) = date'2020-11-20' - date'2020-11-17'+ 1;*/
+
+
+
+
 
 
 

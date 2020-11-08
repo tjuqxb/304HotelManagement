@@ -1,8 +1,7 @@
 package com.cpsc304.HotelManagement.Controller;
 
-import com.cpsc304.HotelManagement.DBHandler.GuestHandler;
-import com.cpsc304.HotelManagement.DBHandler.InHouseGuestHandler;
-import com.cpsc304.HotelManagement.DBHandler.ReservationGuestHandler;
+import com.cpsc304.HotelManagement.DBHandler.*;
+import com.cpsc304.HotelManagement.Model.ReservationRequest;
 import com.cpsc304.HotelManagement.RequestModel.DoubleDates;
 import com.cpsc304.HotelManagement.Model.InHouseGuest;
 import com.cpsc304.HotelManagement.Model.ReservationGuest;
@@ -18,22 +17,29 @@ import java.util.*;
 @CrossOrigin(origins = {"*"}, maxAge = 3600L)
 public class GuestController {
     @Autowired
-    ReservationGuestHandler rh;
+    ReservationGuestHandler reservationGuestHandler;
     @Autowired
-    GuestHandler gh;
+    GuestHandler guestHandler;
     @Autowired
-    InHouseGuestHandler ih;
+    InHouseGuestHandler inHouseGuestHandler;
+    @Autowired
+    ReservationRequestHandler reservationRequestHandler;
+    @Autowired
+    ReserveWithHandler reserveWithHandler;
+    @Autowired
+    RoomRecordHandler roomRecordHandler;
+
     final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
 
     @GetMapping(value = "/list")
     public List<Map<String,Object>> getGuests() {
-        return gh.getAllGuests();
+        return guestHandler.getAllGuests();
     }
 
-    @PostMapping(value = "/reservation_guest")
-    public List<Map<String,Object>> createReservationGuest(@RequestBody Map<String,Object> jsonStr) {
+    @PostMapping(value = "/query_rooms")
+    public List<Map<String,Object>> queryRoom(@RequestBody Map<String,Object> jsonStr) {
+        List<Map<String,Object>> ret = new ArrayList<>();
         System.out.println(jsonStr);
-        // Retrieve jsonObject from key
         Map<String, Object> rgm = (Map<String, Object>) (jsonStr.get("reservationGuest"));
         List<Map<String, Object>> guests = (List<Map<String, Object>>) (jsonStr.get("inHouseGuests"));
         Map<String, Object> dates = (Map<String, Object>) (jsonStr.get("date"));
@@ -52,20 +58,97 @@ public class GuestController {
             String inDate = dd.getInDate();
             String outDate = dd.getOutDate();
             Integer numberOfGuests = guests.size() + 1;
-            if (numberOfGuests > 1) {
-                String sql = "";
-            } else {
-
-            }
+            String sql;
+             ret =  reservationGuestHandler.findAvailableRooms(numberOfGuests, inDate, outDate);
             //
-            Integer rid = rh.insertReservationGuest(rg1);
+
+            /*Integer rid = rh.insertReservationGuest(rg1);
             ArrayList<Integer> gids = new ArrayList<>();
             for (int i = 0; i < guests.size(); i++) {
                 InHouseGuest ig = mapper.convertValue(guests.get(i), InHouseGuest.class);
                 gids.add(ih.insertInHouseGuest(ig));
-            }
+            }*/
 
         }
-        return gh.getAllGuests();
+        return ret;
     }
+
+    public Date addOneDay(Date origin) {
+        Date ret = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(origin);
+        calendar.add(calendar.DATE,1);
+        ret = calendar.getTime();
+        System.out.println(ret);
+        return ret;
+    }
+
+    public String dateToString(Date origin) {
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        return sdf.format(origin);
+    }
+
+    @PostMapping(value = "/reserve_room")
+    public List<Map<String,Object>> reserveRoom(@RequestBody Map<String,Object> jsonStr) {
+        List<Map<String,Object>> ret = new ArrayList<>();
+        System.out.println(jsonStr);
+        Map<String, Object> rgm = (Map<String, Object>) (jsonStr.get("reservationGuest"));
+        List<Map<String, Object>> guests = (List<Map<String, Object>>) (jsonStr.get("inHouseGuests"));
+        Map<String, Object> dates = (Map<String, Object>) (jsonStr.get("date"));
+        Integer rm_number = (Integer)(jsonStr.get("rm_number"));
+        //System.out.println(rm_number);
+        if(rgm != null && dates != null && rm_number != null) {
+            DoubleDates dd = mapper.convertValue(dates, DoubleDates.class);
+            ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
+            Integer req_code = 1;
+            Integer req_status = 0;
+            SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+            Date inDate = new Date();
+            Date outDate = new Date();
+            try {
+                inDate = sdf.parse(dd.getInDate());
+                outDate = sdf.parse(dd.getOutDate());
+            } catch (Exception e) {
+
+            }
+            Date m_date = new Date();
+            Date m_time = new Date();
+            Integer rgId = reservationGuestHandler.insertReservationGuest(rg1);
+            Long lengthOfDays = (outDate.getTime()-inDate.getTime())/(24*60*60*1000) + 1;
+            System.out.println("days"+lengthOfDays);
+            ArrayList<ReservationRequest> rra = new ArrayList<>();
+            Date cal = inDate;
+            ArrayList<Integer> rids = new ArrayList<>();
+            for (int i = 0; i < lengthOfDays; i++) {
+                ReservationRequest rr = new ReservationRequest(rgId, m_date, m_time, req_code, req_status, cal, rm_number);
+                rids.add(reservationRequestHandler.insertReservationRequest(rr));
+                rra.add(rr);
+                cal = addOneDay(cal);
+            }
+
+            Integer numberOfGuests = guests.size() + 1;
+            ArrayList<Integer> gids = new ArrayList<>();
+            for (int i = 0; i < guests.size(); i++) {
+                InHouseGuest ig = mapper.convertValue(guests.get(i), InHouseGuest.class);
+                gids.add(inHouseGuestHandler.insertInHouseGuest(ig));
+            }
+            reserveWithHandler.insertReserveWith(rids, gids);
+            roomRecordHandler.reserveRoomRecords(rra,rids);
+            return reservationRequestHandler.findSuccessRequests(rgId);
+        }
+        return ret;
+    }
+
+    @DeleteMapping(value = "/reservations/{rid}")
+    public void cancelReservation(@PathVariable Integer rid) {
+        reservationRequestHandler.cancelReservation(rid);
+    }
+
+    @GetMapping(value = "/reservations/{photoID}/{creditCard}")
+    public List<Map<String,Object>> getReservations(@PathVariable String photoID, @PathVariable String creditCard) {
+        System.out.println(photoID);
+        System.out.println(creditCard);
+        return reservationRequestHandler.findSuccessRequests(photoID, creditCard);
+    }
+
 }
