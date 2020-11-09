@@ -6,6 +6,10 @@ DROP TABLE IF EXISTS room_status CASCADE;
 DROP TABLE IF EXISTS reservation_req CASCADE;
 DROP TABLE IF EXISTS rm_record CASCADE;
 DROP TABLE IF EXISTS reserve_with CASCADE;
+DROP TABLE IF EXISTS hotel_staff CASCADE;
+DROP TABLE IF EXISTS bill CASCADE;
+DROP TABLE IF EXISTS services CASCADE;
+DROP TABLE IF EXISTS charges CASCADE;
 
 CREATE TABLE guest (
     guest_id INT NOT NULL,
@@ -92,6 +96,45 @@ CREATE TABLE reserve_with(
     FOREIGN KEY (rid) REFERENCES reservation_req(rid) ON DELETE CASCADE,
     FOREIGN KEY (guest_id) REFERENCES in_house_guest(guest_id) ON DELETE CASCADE
 );
+
+CREATE TABLE hotel_staff(
+    sid INT,
+    phone CHAR(50),
+    name CHAR(20) NOT NULL,
+    PRIMARY KEY (sid)
+);
+
+CREATE TABLE bill(
+    bill_num INT NOT NULL,
+    bill_date DATE NOT NULL,
+    rm_number INT NOT NULL,
+    date DATE NOT NULL,
+    PRIMARY KEY (bill_num),
+    UNIQUE (rm_number, date),
+    FOREIGN KEY (rm_number,date) REFERENCES rm_record(rm_number,date)
+);
+
+CREATE TABLE services(
+    service_name CHAR(20),
+    description CHAR(40),
+    fee INT,
+    PRIMARY KEY (service_name)
+);
+
+CREATE TABLE charges(
+    bill_num INT NOT NULL,
+    cid INT,
+    service_name CHAR(20),
+    PRIMARY KEY (cid),
+    FOREIGN KEY (bill_num) REFERENCES bill(bill_num),
+    FOREIGN KEY (service_name) REFERENCES services(service_name)
+);
+
+
+
+
+
+
 
 /*WITH selected_records AS (
 SELECT * FROM
