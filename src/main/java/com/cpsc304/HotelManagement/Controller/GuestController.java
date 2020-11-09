@@ -88,6 +88,17 @@ public class GuestController {
         return sdf.format(origin);
     }
 
+    public Date stringToDate(String str) {
+        Date date = new Date();
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        try {
+            date = sdf.parse(str);
+        } catch (Exception e) {
+
+        }
+        return date;
+    }
+
     @PostMapping(value = "/reserve_room")
     public List<Map<String,Object>> reserveRoom(@RequestBody Map<String,Object> jsonStr) {
         List<Map<String,Object>> ret = new ArrayList<>();
@@ -119,11 +130,18 @@ public class GuestController {
             ArrayList<ReservationRequest> rra = new ArrayList<>();
             Date cal = inDate;
             ArrayList<Integer> rids = new ArrayList<>();
-            for (int i = 0; i < lengthOfDays; i++) {
-                ReservationRequest rr = new ReservationRequest(rgId, m_date, m_time, req_code, req_status, cal, rm_number);
-                rids.add(reservationRequestHandler.insertReservationRequest(rr));
-                rra.add(rr);
-                cal = addOneDay(cal);
+            try {
+                for (int i = 0; i < lengthOfDays; i++) {
+                    ReservationRequest rr = new ReservationRequest(rgId, m_date, m_time, req_code, req_status, cal, rm_number);
+                    rids.add(reservationRequestHandler.insertReservationRequest(rr));
+                    rra.add(rr);
+                    cal = addOneDay(cal);
+                }
+            } catch (RuntimeException e) {
+                HashMap<String, Object> error = new HashMap<>();
+                error.put("Messages","One photo identity proof with credit card can only book one room for one date.");
+                ret.add(error);
+                return ret;
             }
 
             Integer numberOfGuests = guests.size() + 1;
@@ -141,7 +159,9 @@ public class GuestController {
 
     @DeleteMapping(value = "/reservations/{rid}")
     public void cancelReservation(@PathVariable Integer rid) {
-        reservationRequestHandler.cancelReservation(rid);
+        if (rid != null) {
+            reservationRequestHandler.cancelReservation(rid);
+        }
     }
 
     @GetMapping(value = "/reservations/{photoID}/{creditCard}")

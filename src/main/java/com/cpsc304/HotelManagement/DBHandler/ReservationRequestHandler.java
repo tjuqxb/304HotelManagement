@@ -16,7 +16,7 @@ public class ReservationRequestHandler {
     @Autowired
     JdbcTemplate jt;
 
-    public Integer insertReservationRequest(ReservationRequest rr) {
+    public Integer insertReservationRequest(ReservationRequest rr){
         // auto index
         String sql1 = "SELECT MAX(rid) FROM reservation_req";
         List<Map<String, Object>> ret = jt.queryForList(sql1);
@@ -27,7 +27,7 @@ public class ReservationRequestHandler {
             rid = rid + 1;
         }
         String sql2 = "INSERT INTO reservation_req VALUES(?,?,?,?,?,?,?,?);";
-        jt.update(sql2,rid,rr.getGuest_id(),rr.getM_date(),rr.getM_time(),rr.getReq_code(),rr.getReq_status(),rr.getDate(),rr.getRm_number());
+        jt.update(sql2, rid, rr.getGuest_id(), rr.getM_date(), rr.getM_time(), rr.getReq_code(), rr.getReq_status(), rr.getDate(), rr.getRm_number());
         return rid;
     }
 

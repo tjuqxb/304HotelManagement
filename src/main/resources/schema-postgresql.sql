@@ -33,16 +33,23 @@ CREATE TABLE in_house_guest(
 
 CREATE TABLE room_status(
      status_id INT NOT NULL,
-     available CHAR(10) NOT NULL,
-     out_of_service CHAR(10) NOT NULL,
-     clean CHAR(10) NOT NULL,
-     occupied CHAR(10) NOT NULL,
+     available BOOLEAN NOT NULL,
+     out_of_service BOOLEAN NOT NULL,
+     clean BOOLEAN NOT NULL,
+     occupied BOOLEAN NOT NULL,
      PRIMARY KEY (status_id),
      UNIQUE(out_of_service, occupied, clean)
 );
 
-INSERT INTO room_status VALUES (1, true ,false , true , false),(2, false ,false , false , false ),(3, false ,false , false , true),
-(4,false ,false,true,true ),(5,false,true ,false ,false ),(6,false, true ,false ,true ),(7,false,true ,true ,false ),(8,false,true ,true ,true );
+INSERT INTO room_status VALUES
+(1, true ,false,true,false),
+(2, false,false,false,false),
+(3, false,false,false,true),
+(4, false,false,true,true ),
+(5, false,true,false,false ),
+(6, false,true,false,true ),
+(7, false,true,true ,false ),
+(8, false,true,true ,true );
 
 CREATE TABLE room(
     rm_number INT NOT NULL,
