@@ -59,8 +59,8 @@ public class GuestController {
             String outDate = dd.getOutDate();
             Integer numberOfGuests = guests.size() + 1;
             String sql;
-             ret =  reservationGuestHandler.findAvailableRooms(numberOfGuests, inDate, outDate);
-            //
+            ret =  reservationGuestHandler.findAvailableRooms(numberOfGuests, inDate, outDate);
+
 
             /*Integer rid = rh.insertReservationGuest(rg1);
             ArrayList<Integer> gids = new ArrayList<>();
@@ -166,8 +166,6 @@ public class GuestController {
 
     @GetMapping(value = "/reservations/{photoID}/{creditCard}")
     public List<Map<String,Object>> getReservations(@PathVariable String photoID, @PathVariable String creditCard) {
-        System.out.println(photoID);
-        System.out.println(creditCard);
         return reservationRequestHandler.findSuccessRequests(photoID, creditCard);
     }
 
