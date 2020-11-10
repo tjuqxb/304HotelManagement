@@ -45,7 +45,7 @@ public class BootstrapData implements CommandLineRunner{
             Date date= new Date(); //get time
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(date);
-            calendar.add(calendar.DATE,i); //add one day
+            calendar.add(calendar.DATE,i); //add i days
             date=calendar.getTime();
             String strDateFormat = "yyyy-MM-dd";
             SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
