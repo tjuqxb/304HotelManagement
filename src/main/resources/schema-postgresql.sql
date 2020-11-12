@@ -104,6 +104,13 @@ CREATE TABLE hotel_staff(
     PRIMARY KEY (sid)
 );
 
+INSERT INTO hotel_staff VALUES
+(00001,'946-646-9159', 'Darci'),
+(00002,'310-175-9817', 'Worden'),
+(00003,'642-857-7383', 'Sander'),
+(00004,'185-599-6769','Luce'),
+(00005,'139-873-6306','Monica');
+
 CREATE TABLE bill(
     bill_num INT NOT NULL,
     bill_date DATE NOT NULL,
@@ -114,12 +121,27 @@ CREATE TABLE bill(
     FOREIGN KEY (rm_number,date) REFERENCES rm_record(rm_number,date)
 );
 
+/*
+INSERT INTO bill VALUES
+(00001,'2020-10-25',101, '2020-10-22'),
+(00002,'2020-10-24',102, '2020-10-23'),
+(00003,'2020-10-27',103, '2020-10-24'),
+(00004,'2020-10-28',104,'2020-10-25'),
+(00005,'2020-10-30',105,'2020-10-26');*/
+
 CREATE TABLE services(
     service_name CHAR(20),
-    description CHAR(40),
+    description CHAR(60),
     fee INT,
     PRIMARY KEY (service_name)
 );
+
+INSERT INTO services VALUES
+('full_clean','Linen replacement,vacuum,mop,dust,kitchen wipe,dishes', 90),
+('partial_clean','Linen replacement,vacuum and mop', 45),
+('lost_key','Guest lost their key', 25),
+('lost_towel','Towel is missing from suite',10),
+('water_bottle','Guest bought a water bottle',5);
 
 CREATE TABLE charges(
     bill_num INT NOT NULL,
@@ -130,6 +152,13 @@ CREATE TABLE charges(
     FOREIGN KEY (service_name) REFERENCES services(service_name)
 );
 
+/*
+INSERT INTO charges VALUES
+(00001,00001, 'partial_clean'),
+(00002,00002, 'lost_key'),
+(00003,00003, 'lost_towel'),
+(00004,00004,'lost_towel'),
+(00005,00005,'water_bottle');*/
 
 
 
