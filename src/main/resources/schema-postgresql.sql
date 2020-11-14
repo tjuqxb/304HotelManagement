@@ -18,6 +18,18 @@ CREATE TABLE guest (
     PRIMARY KEY (guest_id)
 );
 
+INSERT INTO guest VALUES
+(00001,'Lucy','696-535-6164'),
+(00002,'James','345-100-7932'),
+(00003,'Bob','923-344-1213'),
+(00004,'Amanda','297-142-6267'),
+(00005,'Tom','418-298-5989'),
+(00006,'Edison','987-442-1632'),
+(00007,'Charles','445-575-1484'),
+(00008,'Richard','184-589-8844'),
+(00009,'Julia','175-183-3661'),
+(00010,'David','455-650-9440');
+
 CREATE TABLE reservation_guest(
     guest_id INT NOT NULL,
     credit_card CHAR(30)  NOT NULL,
@@ -29,11 +41,21 @@ CREATE TABLE reservation_guest(
     FOREIGN KEY (guest_id) REFERENCES Guest(guest_id)
 );
 
+INSERT INTO reservation_guest VALUES
+(00001,'36702422025519','392-39-7773','zdegiorgio9@edublogs.org',NULL),
+(00002,'3577037006739620','778-21-0746','icaveya@youtube.com','NORMAL'),
+(00003,'5602221789293420000','480-07-4246', 'cmcinallyb@sohu.com','VIP'),
+(00004,'3563861329178490','556-21-8622','lcrossmanc@guardian.co.uk', NULL),
+(00005,'201940347143160','392-39-7773','fcle@na.com','NORMAL');
+
 CREATE TABLE in_house_guest(
     guest_id INT NOT NULL,
     PRIMARY KEY (guest_id),
     FOREIGN KEY (guest_id) REFERENCES guest(guest_id)
 );
+
+INSERT INTO in_house_guest VALUES
+(00006),(00007),(00008),(00009),(00010);
 
 CREATE TABLE room_status(
      status_id INT NOT NULL,
@@ -121,8 +143,8 @@ CREATE TABLE bill(
     FOREIGN KEY (rm_number,date) REFERENCES rm_record(rm_number,date)
 );
 
-/*
-INSERT INTO bill VALUES
+
+/*INSERT INTO bill VALUES
 (00001,'2020-10-25',101, '2020-10-22'),
 (00002,'2020-10-24',102, '2020-10-23'),
 (00003,'2020-10-27',103, '2020-10-24'),
