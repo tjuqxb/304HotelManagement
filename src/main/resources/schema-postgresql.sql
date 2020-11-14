@@ -100,6 +100,13 @@ CREATE TABLE reservation_req(
     FOREIGN KEY (guest_id) REFERENCES reservation_guest(guest_id)
 );
 
+INSERT INTO reservation_req VALUES
+(00001,00001,'2020-10-22','09:00',1,1,'2020-10-23', 101),
+(00002,00002,'2020-10-23','10:00',1,1,'2020-10-24', 102),
+(00003,00003,'2020-10-24','11:00',1,0,'2020-10-25',103),
+(00004,00004,'2020-10-25','12:00',1,1,'2020-10-26',104),
+(00005,00005,'2020-10-26','13:00',1,0,'2020-10-27',105);
+
 CREATE TABLE rm_record(
     rm_number INT NOT NULL,
     price INT NOT NULL,
@@ -110,6 +117,13 @@ CREATE TABLE rm_record(
     FOREIGN KEY (last_req) REFERENCES reservation_req(rid) ON DELETE CASCADE
 );
 
+INSERT INTO rm_record VALUES
+(101,100,'2020-10-22',00001),
+(102,200,'2020-10-23',00002),
+(103,100,'2020-10-24',00003),
+(104,200,'2020-10-25',00004),
+(105,100,'2020-10-26',00005);
+
 
 CREATE TABLE reserve_with(
     rid INT,
@@ -118,6 +132,13 @@ CREATE TABLE reserve_with(
     FOREIGN KEY (rid) REFERENCES reservation_req(rid) ON DELETE CASCADE,
     FOREIGN KEY (guest_id) REFERENCES in_house_guest(guest_id) ON DELETE CASCADE
 );
+
+INSERT INTO reserve_with VALUES
+(00001,00006),
+(00002,00007),
+(00003,00008),
+(00004,00009),
+(00005,00010);
 
 CREATE TABLE hotel_staff(
     sid INT,
@@ -144,12 +165,12 @@ CREATE TABLE bill(
 );
 
 
-/*INSERT INTO bill VALUES
+INSERT INTO bill VALUES
 (00001,'2020-10-25',101, '2020-10-22'),
 (00002,'2020-10-24',102, '2020-10-23'),
 (00003,'2020-10-27',103, '2020-10-24'),
 (00004,'2020-10-28',104,'2020-10-25'),
-(00005,'2020-10-30',105,'2020-10-26');*/
+(00005,'2020-10-30',105,'2020-10-26');
 
 CREATE TABLE services(
     service_name CHAR(20),
@@ -174,13 +195,12 @@ CREATE TABLE charges(
     FOREIGN KEY (service_name) REFERENCES services(service_name)
 );
 
-/*
 INSERT INTO charges VALUES
 (00001,00001, 'partial_clean'),
 (00002,00002, 'lost_key'),
 (00003,00003, 'lost_towel'),
 (00004,00004,'lost_towel'),
-(00005,00005,'water_bottle');*/
+(00005,00005,'water_bottle');
 
 
 
