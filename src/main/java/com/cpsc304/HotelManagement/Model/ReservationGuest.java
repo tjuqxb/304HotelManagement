@@ -6,7 +6,7 @@ public class ReservationGuest extends Guest{
         String email;
         String membership;
 
-    public ReservationGuest(String name, String phone, Long id, String credit_card, String photoID, String email, String membership) {
+    public ReservationGuest(String name, String phone, Integer id, String credit_card, String photoID, String email, String membership) {
         super(name, phone, id);
         this.credit_card = credit_card;
         this.photo_identity = photoID;

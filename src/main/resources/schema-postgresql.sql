@@ -93,6 +93,9 @@ CREATE TABLE reserve_with(
     FOREIGN KEY (guest_id) REFERENCES in_house_guest(guest_id) ON DELETE CASCADE
 );
 
+
+
+
 /*WITH selected_records AS (
 SELECT * FROM
 rm_record rr

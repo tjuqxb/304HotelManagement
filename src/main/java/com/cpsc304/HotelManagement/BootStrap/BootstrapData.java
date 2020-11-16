@@ -38,27 +38,24 @@ public class BootstrapData implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         createDefaultDB(dataSource);
-        ReservationGuest rg = new ReservationGuest("1","2",3L,"4","5","6","7");
+        ReservationGuest rg = new ReservationGuest("1","2",3,"4","5","6","7");
         gh.insertGuest(rg);
         gh.insertGuest(rg);
-        for (int i = 0; i < 90; i++) {
-            Date date= new Date(); //get time
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(date);
-            calendar.add(calendar.DATE,i); //add one day
-            date=calendar.getTime();
-            String strDateFormat = "yyyy-MM-dd";
-            SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
-            //System.out.println(sdf.format(date));
-            String sql = "INSERT INTO rm_record VALUES(?,?,?,?)";
-            jt.update(sql, 101,80, date,null);
-            jt.update(sql,102,100,date, null);
-            jt.update(sql,103,120,date, null);
-            jt.update(sql,104,140,date, null);
-            jt.update(sql,105,160,date, null);
-        }
+        String sql = "do $$ " +
+                "    declare " +
+                "        v_idx DATE := current_date - 62;" +
+                "    begin " +
+                "        while v_idx != current_date + 182 loop " +
+                "                v_idx := v_idx + 1; " +
+                "                insert into rm_record " +
+                "                values (101, 80, v_idx, null), " +
+                "                       (102, 80, v_idx, null), " +
+                "                       (103, 80, v_idx, null), " +
+                "                       (104, 80, v_idx, null), " +
+                "                       (105, 80, v_idx, null); " +
+                "            end loop; " +
+                "    end; $$;";
+        jt.execute(sql);
 
-
-       // System.out.println(gh.getAllGuests());
     }
 }

@@ -51,4 +51,11 @@ public class ReservationRequestHandler {
         jt.update(sql1, rid);
     }
 
+    public List<Map<String,Object>> getReservationGuest(Integer rid) {
+        String sql = "SELECT g.guest_id, g.name FROM " +
+                "reservation_req rq, guest g " +
+                "WHERE rq.rid = ? AND g.guest_id = rq.guest_id";
+        return jt.queryForList(sql, rid);
+    }
+
 }
