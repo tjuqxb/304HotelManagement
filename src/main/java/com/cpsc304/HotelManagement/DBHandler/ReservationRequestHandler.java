@@ -2,6 +2,7 @@ package com.cpsc304.HotelManagement.DBHandler;
 
 import com.cpsc304.HotelManagement.Model.ReservationGuest;
 import com.cpsc304.HotelManagement.Model.ReservationRequest;
+import com.cpsc304.HotelManagement.Utils.DateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -49,6 +50,32 @@ public class ReservationRequestHandler {
     public void cancelReservation(Integer rid) {
         String sql1 = "DELETE FROM reservation_req WHERE rid = ?;";
         jt.update(sql1, rid);
+    }
+
+    public List<Map<String,Object>> getReservationGuest(Integer rid) {
+        String sql = "SELECT g.guest_id, g.name FROM " +
+                "reservation_req rq, guest g " +
+                "WHERE rq.rid = ? AND g.guest_id = rq.guest_id";
+        return jt.queryForList(sql, rid);
+    }
+
+    public boolean allReserved(Date start, Date end, Integer rm_number, Integer guest_id) {
+        String sql = "SELECT * FROM reservation_req req WHERE req.date >= " +
+                "date " + "'" + DateFormatter.dateToString(start) + "' " +
+                " AND req.date <= " +
+                "date " + "'" + DateFormatter.dateToString(end) + "' " +
+                "AND req.rm_number = ? AND req.guest_id = ? AND req.req_status = 1;";
+        List<Map<String, Object>> result = jt.queryForList(sql,rm_number, guest_id);
+        System.out.println(result);
+        Integer diff = DateFormatter.getDateDifference(start, end);
+        System.out.println(diff);
+        return (diff + 1 == result.size());
+    }
+
+    public List<Map<String, Object>> findReqByRoomAndDate(Integer rm_number, Date date) {
+        String sql = "SELECT * FROM reservation_req req WHERE req.rm_number = ? AND req.date = ? AND req.req_status = 1;";
+        List<Map<String, Object>> result = jt.queryForList(sql, rm_number, date);
+        return  result;
     }
 
 }

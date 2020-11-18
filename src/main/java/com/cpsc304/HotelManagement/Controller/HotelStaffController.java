@@ -23,13 +23,17 @@ public class HotelStaffController {
         return HotelStaffHandler.getAllHotelStaff();
     }
 
+    @GetMapping(value = "/receptionists/list")
+    public List<Map<String,Object>> getRecepionists() {
+        return HotelStaffHandler.getAllHotelStaff();
+    }
+
     @PostMapping(value = "/add_hotelstaff")
     public void addCharges(@RequestBody Map<String,Object> jsonStr) {
         //System.out.println(jsonStr);
         Integer sid = (Integer)(jsonStr.get("sid"));
         String phone = (String)(jsonStr.get("phone"));
         String name = (String)(jsonStr.get("name"));
-
         if(sid != null && name != null) {
             HotelStaff hs = new HotelStaff(sid,phone,name);
             HotelStaffHandler.insertHotelStaff(hs);
