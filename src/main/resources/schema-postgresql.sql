@@ -187,7 +187,7 @@ CREATE TABLE bill(
     date DATE NOT NULL,
     PRIMARY KEY (bill_num),
     UNIQUE (rm_number, date),
-    FOREIGN KEY (rm_number,date) REFERENCES rm_record(rm_number,date)
+    FOREIGN KEY (rm_number, date) REFERENCES rm_record(rm_number,date)
 );
 
 
@@ -199,6 +199,7 @@ INSERT INTO bill VALUES
 (00005,'2020-11-01',105,'2020-11-01');
 
 CREATE TABLE services(
+    service_id INT,
     service_name CHAR(20),
     description CHAR(60),
     fee INT,
@@ -206,11 +207,11 @@ CREATE TABLE services(
 );
 
 INSERT INTO services VALUES
-('full_clean','Linen replacement,vacuum,mop,dust,kitchen wipe,dishes', 90),
-('partial_clean','Linen replacement,vacuum and mop', 45),
-('lost_key','Guest lost their key', 25),
-('lost_towel','Towel is missing from suite',10),
-('water_bottle','Guest bought a water bottle',5);
+(00001,'full_clean','Linen replacement,vacuum,mop,dust,kitchen wipe,dishes', 90),
+(00002,'partial_clean','Linen replacement,vacuum and mop', 45),
+(00003,'lost_key','Guest lost their key', 25),
+(00004,'lost_towel','Towel is missing from suite',10),
+(00005,'water_bottle','Guest bought a water bottle',5);
 
 CREATE TABLE charges(
     bill_num INT NOT NULL,

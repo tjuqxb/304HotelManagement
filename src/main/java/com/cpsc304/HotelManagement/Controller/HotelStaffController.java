@@ -1,12 +1,10 @@
 package com.cpsc304.HotelManagement.Controller;
 
 import com.cpsc304.HotelManagement.DBHandler.HotelStaffHandler;
+import com.cpsc304.HotelManagement.Model.HotelStaff;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +28,15 @@ public class HotelStaffController {
         return HotelStaffHandler.getAllHotelStaff();
     }
 
+    @PostMapping(value = "/add_hotelstaff")
+    public void addCharges(@RequestBody Map<String,Object> jsonStr) {
+        //System.out.println(jsonStr);
+        Integer sid = (Integer)(jsonStr.get("sid"));
+        String phone = (String)(jsonStr.get("phone"));
+        String name = (String)(jsonStr.get("name"));
+        if(sid != null && name != null) {
+            HotelStaff hs = new HotelStaff(sid,phone,name);
+            HotelStaffHandler.insertHotelStaff(hs);
+        }
+    }
 }
