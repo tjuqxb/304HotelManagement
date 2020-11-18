@@ -19,7 +19,7 @@ public class HotelStaffController {
     final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
 
     @GetMapping(value = "/list")
-    public List<Map<String,Object>> getGuests() {
+    public List<Map<String,Object>> getHotelStaff() {
         return HotelStaffHandler.getAllHotelStaff();
     }
 
