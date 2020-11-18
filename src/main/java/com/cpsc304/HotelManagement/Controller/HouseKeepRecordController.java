@@ -38,9 +38,9 @@ public class HouseKeepRecordController {
 
         if(kp_id != null && dates != null && times != null && sid != null && rm_number != null) {
             d = DateFormatter.stringToDate(dates);
-            t = DateFormatter.stringToDate(times);
+            t = DateFormatter.stringToTime(times);
 
-            HouseKeep_Record hk_record = new HouseKeep_Record(kp_id, d,t, sid, rm_number);
+            HouseKeep_Record hk_record = new HouseKeep_Record(kp_id, d, t, sid, rm_number);
             HouseKeepRecordHandler.insertHouseKeepRecord(hk_record);
         }
     }

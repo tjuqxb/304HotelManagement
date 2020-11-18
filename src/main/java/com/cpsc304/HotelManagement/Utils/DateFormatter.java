@@ -34,6 +34,17 @@ public class DateFormatter {
         return date;
     }
 
+    public static Date stringToTime(String str) {
+        Date time = new Date();
+        SimpleDateFormat sdf =   new SimpleDateFormat( "hh:mm:ss" );
+        try {
+            time = sdf.parse(str);
+        } catch (Exception e) {
+
+        }
+        return time;
+    }
+
     public static Integer getLastDayOfMonth(Double dYear, Double dMonth) {
         Integer year = dYear.intValue();
         Integer month  = dMonth.intValue();
