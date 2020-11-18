@@ -1,9 +1,5 @@
 package com.cpsc304.HotelManagement.DBHandler;
 
-<<<<<<< HEAD
-=======
-import com.cpsc304.HotelManagement.Model.ReservationRequest;
->>>>>>> f63342633800056f2c0c5a0eb019246ac125fa42
 import com.cpsc304.HotelManagement.Utils.DateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
