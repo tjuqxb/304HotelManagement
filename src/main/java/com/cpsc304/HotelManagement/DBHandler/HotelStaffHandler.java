@@ -33,4 +33,12 @@ public class HotelStaffHandler {
         List<Map<String, Object>> ret = jt.queryForList(sql);
         return ret;
     }
+
+    public List<Map<String, Object>> getAllReceptionists() {
+        String sql = "SELECT * FROM hotel_staff, receptionist WHERE hotel_staff.sid = receptionist.sid;";
+        List<Map<String, Object>> ret = jt.queryForList(sql);
+        return ret;
+    }
+
+
 }

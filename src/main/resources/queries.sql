@@ -38,3 +38,8 @@ do $$
                        (105, 80, v_idx, null);
             end loop;
     end$$;
+
+SELECT *
+FROM checked_in_out_rec cr
+WHERE cr.rm_number = 101 AND ((EXTRACT(ISOYEAR FROM cr.in_date) = 2020 AND EXTRACT(MONTH FROM cr.in_date) = 10) OR
+(EXTRACT(ISOYEAR FROM cr.out_date) = 2020 AND EXTRACT(MONTH FROM cr.out_date) = 10));

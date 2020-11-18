@@ -35,33 +35,7 @@ public class ReservationGuestHandler {
         return id;
     }
 
-    public List<Map<String, Object>> findAvailableRooms(Integer cnt, String inDate, String outDate) {
-        String sql;
-        inDate = "'" + inDate + "'";
-        outDate = "'" + outDate + "'";
-        if (cnt == 1) {
-            sql = "WITH selected_records AS (" +
-                    "SELECT * FROM " +
-                    "rm_record rr " +
-                    "WHERE rr.date >= date "+ inDate + "  AND rr.date <= date "+ outDate +" AND rr.last_req is NULL " +
-                    ")SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM " +
-                    "selected_records sr, room " +
-                    "WHERE sr.rm_number = room.rm_number AND room.status_id = 1 AND room.type = ? " +
-                    "GROUP BY sr.rm_number, room.type " +
-                    "HAVING  COUNT (*) = date " + outDate + " - date " + inDate + " + 1;";
-        } else {
-            sql = "WITH selected_records AS (" +
-                    "SELECT * FROM " +
-                    "rm_record rr " +
-                    "WHERE rr.date >= date "+ inDate + "  AND rr.date <= date "+ outDate +" AND rr.last_req is NULL " +
-                    ")SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM " +
-                    "selected_records sr, room " +
-                    "WHERE sr.rm_number = room.rm_number AND room.status_id = 1 AND room.type != ? " +
-                    "GROUP BY sr.rm_number, room.type " +
-                    "HAVING  COUNT (*) = date " + outDate + " - date " + inDate + " + 1;";
-        }
-        return jt.queryForList(sql, "1BED");
-    }
+
 
 
 

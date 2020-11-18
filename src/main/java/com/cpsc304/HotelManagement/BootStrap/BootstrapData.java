@@ -3,6 +3,7 @@ package com.cpsc304.HotelManagement.BootStrap;
 import com.cpsc304.HotelManagement.DBHandler.GuestHandler;
 import com.cpsc304.HotelManagement.DBHandler.ReservationGuestHandler;
 import com.cpsc304.HotelManagement.Model.ReservationGuest;
+import com.cpsc304.HotelManagement.Utils.DateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -43,7 +44,7 @@ public class BootstrapData implements CommandLineRunner{
         gh.insertGuest(rg);
         String sql = "do $$ " +
                 "    declare " +
-                "        v_idx DATE := current_date - 62;" +
+                "        v_idx DATE := current_date;" +
                 "    begin " +
                 "        while v_idx != current_date + 182 loop " +
                 "                v_idx := v_idx + 1; " +
@@ -56,5 +57,7 @@ public class BootstrapData implements CommandLineRunner{
                 "            end loop; " +
                 "    end; $$;";
         jt.execute(sql);
+
     }
+
 }

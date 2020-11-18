@@ -2,6 +2,7 @@ package com.cpsc304.HotelManagement.DBHandler;
 
 import com.cpsc304.HotelManagement.Controller.GuestController;
 import com.cpsc304.HotelManagement.Model.ReservationRequest;
+import com.cpsc304.HotelManagement.Utils.DateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class RoomRecordHandler {
             ReservationRequest rq = reservationRequests.get(i);
             Integer rm_number = rq.getRm_number();
             Date date = rq.getDate();
-            String dateString = "'" + guestController.dateToString(date) + "'";
+            String dateString = "'" + DateFormatter.dateToString(date) + "'";
             String singleSql = "UPDATE rm_record SET last_req = " + rid + " WHERE rm_number = " + rm_number +
                     " AND date = " + dateString + ";";
             String singleSql2 = "UPDATE reservation_req SET req_status =  1 WHERE rid = " + rid + ";";
@@ -47,17 +48,14 @@ public class RoomRecordHandler {
         for(int i = 0; i < rooms.size(); i++) {
             reservationRecords.add(new ArrayList<>());
             Integer rm_number = (Integer) rooms.get(i).get("rm_number");
+            //System.out.println(rm_number);
             String type = (String) rooms.get(i).get("type");
             String sql = "SELECT rm_number, last_req, date FROM rm_record rr WHERE rr.rm_number = ? " +
-                    "AND EXTRACT(ISOYEAR FROM rr.DATE) = ? AND EXTRACT(MONTH FROM rr.DATE) = ? AND rr.last_req is not null OR " +
-                    "EXTRACT(DAY FROM rr.DATE) = 1 " +
+                    "AND EXTRACT(ISOYEAR FROM rr.DATE) = ? AND EXTRACT(MONTH FROM rr.DATE) = ? AND (rr.last_req is not null OR " +
+                    "EXTRACT(DAY FROM rr.DATE) = 1) " +
                     "ORDER BY date ASC ";
-            String sql2 = "SELECT COUNT(*) FROM rm_record rr WHERE rr.rm_number = ? " +
-                    "AND EXTRACT(ISOYEAR FROM rr.DATE) = ? AND EXTRACT(MONTH FROM rr.DATE) = ? ";
             List<Map<String, Object>> singleRoomReservation = jt.queryForList(sql, rm_number, year, month);
-            List<Map<String, Object>> countArr = jt.queryForList(sql2, rm_number, year, month);
-            singleRoomReservation.get(0).put("size", countArr.get(0).get("COUNT"));
-            singleRoomReservation.get(0).put("type",type);
+            singleRoomReservation.add(0, rooms.get(i));
             reservationRecords.get(i).add(singleRoomReservation.get(0));
             for (int j = 0; j < singleRoomReservation.size(); j++) {
                 Object last_req = singleRoomReservation.get(j).get("last_req");
@@ -78,5 +76,35 @@ public class RoomRecordHandler {
         }
         return reservationRecords;
     }
+
+    public List<Map<String, Object>> findAvailableRooms(Integer cnt, String inDate, String outDate) {
+        String sql;
+        inDate = "'" + inDate + "'";
+        outDate = "'" + outDate + "'";
+        if (cnt == 1) {
+            sql = "WITH selected_records AS (" +
+                    "SELECT * FROM " +
+                    "rm_record rr " +
+                    "WHERE rr.date >= date "+ inDate + "  AND rr.date <= date "+ outDate +" AND rr.last_req is NULL " +
+                    ")SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM " +
+                    "selected_records sr, room " +
+                    "WHERE sr.rm_number = room.rm_number AND room.status_id = 1 AND room.type = ? " +
+                    "GROUP BY sr.rm_number, room.type " +
+                    "HAVING  COUNT (*) = date " + outDate + " - date " + inDate + " + 1;";
+        } else {
+            sql = "WITH selected_records AS (" +
+                    "SELECT * FROM " +
+                    "rm_record rr " +
+                    "WHERE rr.date >= date "+ inDate + "  AND rr.date <= date "+ outDate +" AND rr.last_req is NULL " +
+                    ")SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM " +
+                    "selected_records sr, room " +
+                    "WHERE sr.rm_number = room.rm_number AND room.status_id = 1 AND room.type != ? " +
+                    "GROUP BY sr.rm_number, room.type " +
+                    "HAVING  COUNT (*) = date " + outDate + " - date " + inDate + " + 1;";
+        }
+        return jt.queryForList(sql, "1BED");
+    }
+
+
 
 }

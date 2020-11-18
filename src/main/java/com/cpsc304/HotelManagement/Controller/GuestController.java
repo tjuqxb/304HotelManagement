@@ -5,6 +5,7 @@ import com.cpsc304.HotelManagement.Model.ReservationRequest;
 import com.cpsc304.HotelManagement.RequestModel.DoubleDates;
 import com.cpsc304.HotelManagement.Model.InHouseGuest;
 import com.cpsc304.HotelManagement.Model.ReservationGuest;
+import com.cpsc304.HotelManagement.Utils.DateFormatter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class GuestController {
             String outDate = dd.getOutDate();
             Integer numberOfGuests = guests.size() + 1;
             String sql;
-            ret =  reservationGuestHandler.findAvailableRooms(numberOfGuests, inDate, outDate);
+            ret =  roomRecordHandler.findAvailableRooms(numberOfGuests, inDate, outDate);
 
 
             /*Integer rid = rh.insertReservationGuest(rg1);
@@ -71,32 +72,6 @@ public class GuestController {
 
         }
         return ret;
-    }
-
-    public Date addOneDay(Date origin) {
-        Date ret = new Date();
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(origin);
-        calendar.add(calendar.DATE,1);
-        ret = calendar.getTime();
-        System.out.println(ret);
-        return ret;
-    }
-
-    public String dateToString(Date origin) {
-        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
-        return sdf.format(origin);
-    }
-
-    public Date stringToDate(String str) {
-        Date date = new Date();
-        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
-        try {
-            date = sdf.parse(str);
-        } catch (Exception e) {
-
-        }
-        return date;
     }
 
     @PostMapping(value = "/reserve_room")
@@ -135,7 +110,7 @@ public class GuestController {
                     ReservationRequest rr = new ReservationRequest(rgId, m_date, m_time, req_code, req_status, cal, rm_number);
                     rids.add(reservationRequestHandler.insertReservationRequest(rr));
                     rra.add(rr);
-                    cal = addOneDay(cal);
+                    cal = DateFormatter.addOneDay(cal);
                 }
             } catch (RuntimeException e) {
                 HashMap<String, Object> error = new HashMap<>();
