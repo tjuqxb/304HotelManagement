@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS bill CASCADE;
 DROP TABLE IF EXISTS services CASCADE;
 DROP TABLE IF EXISTS charges CASCADE;
 DROP TABLE IF EXISTS checked_in_out_rec CASCADE;
+DROP TABLE IF EXISTS housekeep_record CASCADE;
 
 CREATE TABLE guest (
     guest_id INT NOT NULL,
@@ -177,6 +178,25 @@ INSERT INTO hotel_staff VALUES
 (00005,'139-873-6306','Monica');
 
 INSERT INTO receptionist VALUES (1),(2),(3),(4),(5);
+
+CREATE TABLE housekeep_record(
+kp_id INT,
+date DATE NOT NULL ,
+time TIME NOT NULL,
+sid INT NOT NULL,
+rm_number INT NOT NULL,
+PRIMARY KEY (kp_id),
+UNIQUE( date, time, sid),
+FOREIGN KEY (sid) REFERENCES receptionist(sid),
+FOREIGN KEY (rm_number) REFERENCES room(rm_number)
+);
+
+INSERT INTO housekeep_record VALUES
+(00001,'2020-10-22','09:00',00001, 101),
+(00002,'2020-10-23','10:00',00002, 102),
+(00003,'2020-10-24','11:00',00003, 103),
+(00004,'2020-10-25','12:00',00004, 104),
+(00005,'2020-10-26','14:00',00005, 105);
 
 
 
