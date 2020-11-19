@@ -121,7 +121,7 @@ CREATE TABLE rm_record(
     last_req INT,
     PRIMARY KEY (rm_number, date),
     FOREIGN KEY (rm_number) REFERENCES room(rm_number),
-    FOREIGN KEY (last_req) REFERENCES reservation_req(rid)
+    FOREIGN KEY (last_req) REFERENCES reservation_req(rid) ON DELETE SET NULL
 );
 
 INSERT INTO rm_record VALUES
@@ -251,7 +251,7 @@ CREATE TABLE checked_in_out_rec(
 
 
 
-INSERT INTO checked_in_out_rec VALUES (0, '2020-10-22', '08:00:00', NULL, NULL, 1, NULL, 1, 101),
+INSERT INTO checked_in_out_rec VALUES
 (1,'2020-11-01', '08:00:00', NULL, NULL,1,NULL, 4, 104),
 (2,'2020-10-31', '08:00:00', NULL, NULL,1,NULL, 5, 105);
 

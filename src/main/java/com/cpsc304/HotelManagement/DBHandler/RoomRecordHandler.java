@@ -38,7 +38,7 @@ public class RoomRecordHandler {
             String singleSql2 = "UPDATE reservation_req SET req_status =  1 WHERE rid = " + rid + ";";
             sql = sql + singleSql + singleSql2;
         }
-        System.out.println(sql);
+        //System.out.println(sql);
         jt.execute(sql);
     }
 
@@ -63,8 +63,8 @@ public class RoomRecordHandler {
                     Integer rid = (Integer)last_req;
                     Date date = (Date)singleRoomReservation.get(j).get("date");
                     Integer dos = date.getDate();
-                    System.out.println(date);
-                    System.out.println(dos);
+                    //System.out.println(date);
+                    //System.out.println(dos);
                     Map<String, Object> reservationGuest = reservationRequestHandler.getReservationGuest(rid).get(0);
                     List<Map<String, Object>> inHouseGuests = reserveWithHandler.getInHouseGuests(rid);
                     singleRoomReservation.get(j).put("index",dos - 1);
@@ -105,6 +105,46 @@ public class RoomRecordHandler {
         return jt.queryForList(sql, "1BED");
     }
 
+    public List<Map<String, Object>> findCheapAvailableRooms(Integer cnt, String inD, String outD) {
+        String sql;
+        String inDate = "'" + inD + "'";
+        String outDate = "'" + outD + "'";
+        if (cnt == 1) {
+            sql = "WITH Temp AS (WITH selected_records AS ( SELECT * FROM rm_record rr " +
+                    "WHERE rr.date >= DATE " + inDate +
+                    " AND rr.date <=  DATE " + outDate +
+                    " AND rr.last_req is NULL) " +
+                    "SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM " +
+                    "selected_records sr, room " +
+                    "WHERE sr.rm_number = room.rm_number AND room.status_id = 1 AND room.type = ?" +
+                    "GROUP BY sr.rm_number, room.type " +
+                    "HAVING  COUNT (*) =  DATE " + outDate +
+                    " - DATE " + inDate +
+                    " + 1) " +
+                    "SELECT * FROM Temp WHERE Temp.average_price = (SELECT MIN(average_price) FROM TEMP);";
+        } else {
+            sql = "WITH Temp AS (WITH selected_records AS ( SELECT * FROM rm_record rr " +
+                    "WHERE rr.date >=  DATE " + inDate +
+                    " AND rr.date <= DATE " + outDate +
+                    " AND rr.last_req is NULL) " +
+                    "SELECT sr.rm_number AS room_number, room.type, CAST (AVG (sr.price) AS INTEGER ) AS average_price FROM " +
+                    "selected_records sr, room " +
+                    "WHERE sr.rm_number = room.rm_number AND room.status_id = 1 AND room.type != ? " +
+                    "GROUP BY sr.rm_number, room.type " +
+                    "HAVING  COUNT (*) =  DATE " + outDate +
+                    " -  DATE" + inDate +
+                    " + 1) " +
+                    "SELECT * FROM Temp WHERE Temp.average_price = (SELECT MIN(average_price) FROM TEMP);";
+        }
+        return jt.queryForList(sql, "1BED");
+    }
+
+    public List<Map<String, Object>> getRoomRecordsByCheckId(Integer ck_id) {
+        String sql = "SELECT rr.rm_number, rr.price, rr.date FROM rm_record rr, checked_in_out_rec cr " +
+                "WHERE rr.date >= cr.in_date AND rr.date <= cr.out_date AND rr.rm_number = cr.rm_number AND cr.ck_id = ? " +
+                "ORDER BY rr.date ASC;";
+        return jt.queryForList(sql,ck_id);
+    }
 
 
 }

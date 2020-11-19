@@ -66,9 +66,9 @@ public class ReservationRequestHandler {
                 "date " + "'" + DateFormatter.dateToString(end) + "' " +
                 "AND req.rm_number = ? AND req.guest_id = ? AND req.req_status = 1;";
         List<Map<String, Object>> result = jt.queryForList(sql,rm_number, guest_id);
-        System.out.println(result);
+        //System.out.println(result);
         Integer diff = DateFormatter.getDateDifference(start, end);
-        System.out.println(diff);
+        //System.out.println(diff);
         return (diff + 1 == result.size());
     }
 

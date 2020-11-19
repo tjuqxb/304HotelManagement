@@ -27,4 +27,9 @@ public class RoomRecordsController {
         return roomRecordHandler.getRoomReservations(year, month);
     }
 
+    @GetMapping(value = "/room-records-in-checkout/{ck_id}")
+    public List<Map<String, Object>> getRoomRecordsInCheckOut(@PathVariable Integer ck_id) {
+        return roomRecordHandler.getRoomRecordsByCheckId(ck_id);
+    }
+
 }

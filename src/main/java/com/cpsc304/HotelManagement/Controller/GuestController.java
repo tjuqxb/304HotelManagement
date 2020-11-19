@@ -40,36 +40,33 @@ public class GuestController {
     @PostMapping(value = "/query_rooms")
     public List<Map<String,Object>> queryRoom(@RequestBody Map<String,Object> jsonStr) {
         List<Map<String,Object>> ret = new ArrayList<>();
-        System.out.println(jsonStr);
         Map<String, Object> rgm = (Map<String, Object>) (jsonStr.get("reservationGuest"));
         List<Map<String, Object>> guests = (List<Map<String, Object>>) (jsonStr.get("inHouseGuests"));
         Map<String, Object> dates = (Map<String, Object>) (jsonStr.get("date"));
         if(rgm != null && dates != null) {
             DoubleDates dd = mapper.convertValue(dates, DoubleDates.class);
             ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
-            /*SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
-            Date inDate = new Date();
-            Date outDate = new Date();
-            try {
-                inDate = sdf.parse(dd.getInDate());
-                outDate = sdf.parse(dd.getOutDate());
-            } catch (Exception e) {
-
-            }*/
             String inDate = dd.getInDate();
             String outDate = dd.getOutDate();
             Integer numberOfGuests = guests.size() + 1;
-            String sql;
             ret =  roomRecordHandler.findAvailableRooms(numberOfGuests, inDate, outDate);
+        }
+        return ret;
+    }
 
-
-            /*Integer rid = rh.insertReservationGuest(rg1);
-            ArrayList<Integer> gids = new ArrayList<>();
-            for (int i = 0; i < guests.size(); i++) {
-                InHouseGuest ig = mapper.convertValue(guests.get(i), InHouseGuest.class);
-                gids.add(ih.insertInHouseGuest(ig));
-            }*/
-
+    @PostMapping(value = "/query_cheap_rooms")
+    public List<Map<String,Object>> queryCheapRoom(@RequestBody Map<String,Object> jsonStr) {
+        List<Map<String,Object>> ret = new ArrayList<>();
+        Map<String, Object> rgm = (Map<String, Object>) (jsonStr.get("reservationGuest"));
+        List<Map<String, Object>> guests = (List<Map<String, Object>>) (jsonStr.get("inHouseGuests"));
+        Map<String, Object> dates = (Map<String, Object>) (jsonStr.get("date"));
+        if(rgm != null && dates != null) {
+            DoubleDates dd = mapper.convertValue(dates, DoubleDates.class);
+            ReservationGuest rg1 = mapper.convertValue(rgm, ReservationGuest.class);
+            String inDate = dd.getInDate();
+            String outDate = dd.getOutDate();
+            Integer numberOfGuests = guests.size() + 1;
+            ret =  roomRecordHandler.findCheapAvailableRooms(numberOfGuests, inDate, outDate);
         }
         return ret;
     }
@@ -77,7 +74,7 @@ public class GuestController {
     @PostMapping(value = "/reserve_room")
     public List<Map<String,Object>> reserveRoom(@RequestBody Map<String,Object> jsonStr) {
         List<Map<String,Object>> ret = new ArrayList<>();
-        System.out.println(jsonStr);
+        //System.out.println(jsonStr);
         Map<String, Object> rgm = (Map<String, Object>) (jsonStr.get("reservationGuest"));
         List<Map<String, Object>> guests = (List<Map<String, Object>>) (jsonStr.get("inHouseGuests"));
         Map<String, Object> dates = (Map<String, Object>) (jsonStr.get("date"));
@@ -101,7 +98,7 @@ public class GuestController {
             Date m_time = new Date();
             Integer rgId = reservationGuestHandler.insertReservationGuest(rg1);
             Long lengthOfDays = (outDate.getTime()-inDate.getTime())/(24*60*60*1000) + 1;
-            System.out.println("days"+lengthOfDays);
+            //System.out.println("days"+lengthOfDays);
             ArrayList<ReservationRequest> rra = new ArrayList<>();
             Date cal = inDate;
             ArrayList<Integer> rids = new ArrayList<>();

@@ -44,16 +44,16 @@ public class BootstrapData implements CommandLineRunner{
         gh.insertGuest(rg);
         String sql = "do $$ " +
                 "    declare " +
-                "        v_idx DATE := current_date;" +
+                "        v_idx DATE := current_date - 1;" +
                 "    begin " +
                 "        while v_idx != current_date + 182 loop " +
                 "                v_idx := v_idx + 1; " +
                 "                insert into rm_record " +
-                "                values (101, 80, v_idx, null), " +
-                "                       (102, 80, v_idx, null), " +
-                "                       (103, 80, v_idx, null), " +
-                "                       (104, 80, v_idx, null), " +
-                "                       (105, 80, v_idx, null); " +
+                "                values (101, 100, v_idx, null), " +
+                "                       (102, 120, v_idx, null), " +
+                "                       (103, 135, v_idx, null), " +
+                "                       (104, 115, v_idx, null), " +
+                "                       (105, 105, v_idx, null); " +
                 "            end loop; " +
                 "    end; $$;";
         jt.execute(sql);
