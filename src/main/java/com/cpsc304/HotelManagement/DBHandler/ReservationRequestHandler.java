@@ -78,4 +78,16 @@ public class ReservationRequestHandler {
         return  result;
     }
 
+    public List<Map<String, Object>> getProjectionQuery(List<String> arr) {
+        String sql = "SELECT DISTINCT " + produceStringProjection(arr) + " FROM reservation_req rr, guest g WHERE rr.guest_id = g.guest_id;";
+        return jt.queryForList(sql);
+    }
+
+    public String produceStringProjection(List<String> arr) {
+        StringBuilder init = new StringBuilder(arr.get(0));
+        for (int i = 1; i < arr.size(); i++) {
+            init.append(",").append(arr.get(i));
+        }
+        return init.toString();
+    }
 }

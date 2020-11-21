@@ -49,11 +49,11 @@ public class BootstrapData implements CommandLineRunner{
                 "        while v_idx != current_date + 182 loop " +
                 "                v_idx := v_idx + 1; " +
                 "                insert into rm_record " +
-                "                values (101, 100, v_idx, null), " +
-                "                       (102, 120, v_idx, null), " +
-                "                       (103, 135, v_idx, null), " +
-                "                       (104, 115, v_idx, null), " +
-                "                       (105, 105, v_idx, null); " +
+                "                values (101, 100 + (SELECT random()*(25-10)+10), v_idx, null), " +
+                "                       (102, 120 + (SELECT random()*(25-10)+10), v_idx, null), " +
+                "                       (103, 135 + (SELECT random()*(25-10)+10), v_idx, null), " +
+                "                       (104, 115 + (SELECT random()*(25-10)+10), v_idx, null), " +
+                "                       (105, 105 + (SELECT random()*(25-10)+10), v_idx, null); " +
                 "            end loop; " +
                 "    end; $$;";
         jt.execute(sql);

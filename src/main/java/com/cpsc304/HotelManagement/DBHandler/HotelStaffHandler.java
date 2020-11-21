@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,5 +41,21 @@ public class HotelStaffHandler {
         return ret;
     }
 
+    public List<Map<String, Object>> getEligibleHotelStaff(Date date1, Date date2) {
+        String sql = "SELECT *" +
+                "FROM hotel_staff hs " +
+                "WHERE " +
+                "NOT EXISTS ( " +
+                "(SELECT rm_number  FROM room) " +
+                "EXCEPT " +
+                "(SELECT " +
+                " DISTINCT rm_number FROM checked_in_out_rec cr " +
+                "WHERE  " +
+                "(cr.in_date >= ? AND " +
+                "cr.in_date <= ? AND cr.ck_in = hs.sid) OR (cr.out_date >= ? AND " +
+                "cr.out_date <= ? AND cr.ck_out = hs.sid)));";
+        List<Map<String, Object>> ret = jt.queryForList(sql, date1, date2,date1, date2);
+        return ret;
+    }
 
 }

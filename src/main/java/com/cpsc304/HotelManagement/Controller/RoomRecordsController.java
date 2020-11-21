@@ -32,4 +32,9 @@ public class RoomRecordsController {
         return roomRecordHandler.getRoomRecordsByCheckId(ck_id);
     }
 
+    @GetMapping(value = "/room-records/price/{var}")
+    public List<Map<String, Object>> getGroupRoomRecords(@PathVariable String var) {
+        return roomRecordHandler.findRoomsInGroup(var);
+    }
+
 }

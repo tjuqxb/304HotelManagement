@@ -146,5 +146,20 @@ public class RoomRecordHandler {
         return jt.queryForList(sql,ck_id);
     }
 
+    public List<Map<String, Object>> findRoomsInGroup(String query) {
+        String sql = "SELECT * FROM rm_record ORDER BY rm_number, date;";
+        if (query.equals("min")) {
+            sql = "SELECT rm_number, MIN(price) from rm_record GROUP BY rm_number ORDER BY rm_number;";
+        }
+        if (query.equals("max")) {
+            sql = "SELECT rm_number, MAX(price) from rm_record GROUP BY rm_number ORDER BY rm_number;";
+        }
+        if (query.equals("avg")) {
+            sql = "SELECT rm_number, CAST(AVG(price) AS INTEGER) from rm_record GROUP BY rm_number ORDER BY rm_number;";
+        }
+        return jt.queryForList(sql);
+
+    }
+
 
 }
