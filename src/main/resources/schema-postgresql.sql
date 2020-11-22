@@ -135,9 +135,6 @@ INSERT INTO rm_record VALUES
 (105,125,'2020-10-31',00007),
 (105,125,'2020-11-01',00008),
 (105,125,'2020-11-02',00009);
--- (101,100,'2020-11-01',NULL),
--- (102,200,'2020-11-01',NULL),
--- (103,100,'2020-11-01',NULL);
 
 
 CREATE TABLE reserve_with(
@@ -270,20 +267,64 @@ CREATE TABLE checked_in_out_rec(
 );
 
 
-
 INSERT INTO checked_in_out_rec VALUES
 (1,'2020-11-01', '08:00:00', NULL, NULL,1,NULL, 4, 104),
 (2,'2020-10-31', '08:00:00', NULL, NULL,1,NULL, 5, 105);
 
 
+do '    declare
+                       v_idx DATE := current_date - 1;
+                    begin
+                    while v_idx != current_date + 182 loop
+                               v_idx := v_idx + 1;
+                               insert into rm_record
+                               values (101, 100 + (SELECT random()*(25-10)+10), v_idx, null),
+                                      (102, 120 + (SELECT random()*(25-10)+10), v_idx, null),
+                                   (103, 135 + (SELECT random()*(25-10)+10), v_idx, null),
+                                      (104, 115 + (SELECT random()*(25-10)+10), v_idx, null),
+                                      (105, 105 + (SELECT random()*(25-10)+10), v_idx, null);
+                           end loop;
+                  end; 'LANGUAGE PLPGSQL;
+
+INSERT INTO reservation_req VALUES
+(000010,00001,'2020-11-22','09:00',1,1,'2020-12-23',101),
+(000011,00002,'2020-11-23','10:00',1,1,'2020-12-24',102),
+(000012,00003,'2020-11-24','11:00',1,1,'2020-12-25',103),
+(000013,00004,'2020-11-25','12:00',1,1,'2020-12-26',104),
+(000014,00004,'2020-11-25','12:00',1,1,'2020-12-27',104),
+(000015,00005,'2020-11-25','12:00',1,1,'2020-12-31',105);
+
+UPDATE rm_record
+SET last_req = 10
+WHERE rm_number = 101 AND date = '2020-12-23';
+
+UPDATE rm_record
+SET last_req = 11
+WHERE rm_number = 102 AND date = '2020-12-24';
+
+UPDATE rm_record
+SET last_req = 12
+WHERE rm_number = 103 AND date = '2020-12-25';
+
+UPDATE rm_record
+SET last_req = 13
+WHERE rm_number = 104 AND date = '2020-12-26';
+
+UPDATE rm_record
+SET last_req = 14
+WHERE rm_number = 104 AND date = '2020-12-27';
+
+UPDATE rm_record
+SET last_req = 15
+WHERE rm_number = 105 AND date = '2020-12-31';
 
 
-
-
-
-
-
-
+INSERT INTO checked_in_out_rec VALUES
+(3,'2020-12-23', '08:00:00', NULL, NULL,1,NULL, 1, 101),
+(4,'2020-12-24', '08:00:00', NULL, NULL,1,NULL, 2, 102),
+(5,'2020-12-25', '08:00:00', NULL, NULL,1,NULL, 3, 103),
+(6,'2020-12-26', '08:00:00', NULL, NULL,1,NULL, 4, 104),
+(7,'2020-12-31', '08:00:00', NULL, NULL,1,NULL, 5, 105);
 
 
 

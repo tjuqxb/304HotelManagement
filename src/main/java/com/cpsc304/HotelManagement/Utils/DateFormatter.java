@@ -19,7 +19,7 @@ public class DateFormatter {
     public static String dateToString(Date origin) {
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
         String ret = sdf.format(origin);
-        System.out.println(ret);
+        //System.out.println(ret);
         return ret;
     }
 
