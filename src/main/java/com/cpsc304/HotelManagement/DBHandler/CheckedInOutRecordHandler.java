@@ -57,7 +57,7 @@ public class CheckedInOutRecordHandler {
             Integer rm_number = (Integer) rooms.get(i).get("rm_number");
             String sql = "SELECT * FROM checked_in_out_rec cr " +
                     "WHERE cr.rm_number = ? AND ((EXTRACT(ISOYEAR FROM cr.in_date) = ? AND EXTRACT(MONTH FROM cr.in_date) = ?) OR " +
-                    "(EXTRACT(ISOYEAR FROM cr.out_date) = ? AND EXTRACT(MONTH FROM cr.out_date) = ?)) ";
+                    "(EXTRACT(ISOYEAR FROM cr.out_date) = ? AND EXTRACT(MONTH FROM cr.out_date) = ?)); ";
             List<Map<String, Object>> singleRecords = jt.queryForList(sql, rm_number, year, month, year, month);
             for (int j = 0; j < singleRecords.size(); j++) {
                 Date in_date = (Date) singleRecords.get(j).get("in_date");

@@ -141,4 +141,9 @@ public class GuestController {
         return reservationRequestHandler.findSuccessRequests(photoID, creditCard);
     }
 
+    @GetMapping(value = "/reservations_greater_count/{n}")
+    public List<Map<String, Object>> getGuestWithMoreReservations(@PathVariable Integer n) {
+        return reservationRequestHandler.getGuestsWithMoreReservations(n);
+    }
+
 }

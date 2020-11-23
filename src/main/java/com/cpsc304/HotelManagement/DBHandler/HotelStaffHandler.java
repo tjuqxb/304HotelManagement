@@ -46,7 +46,7 @@ public class HotelStaffHandler {
                 "FROM hotel_staff hs " +
                 "WHERE " +
                 "NOT EXISTS ( " +
-                "(SELECT rm_number  FROM room) " +
+                "(SELECT DISTINCT rm_number  FROM room) " +
                 "EXCEPT " +
                 "(SELECT " +
                 " DISTINCT rm_number FROM checked_in_out_rec cr " +

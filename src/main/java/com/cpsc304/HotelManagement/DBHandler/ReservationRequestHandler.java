@@ -83,6 +83,12 @@ public class ReservationRequestHandler {
         return jt.queryForList(sql);
     }
 
+    public List<Map<String, Object>> getGuestsWithMoreReservations(Integer n) {
+        String sql = "SELECT g.guest_id, g.name, g.phone From reservation_req rr, guest g WHERE rr.guest_id = g.guest_id GROUP BY g.guest_id, g.phone, g.name HAVING COUNT(*) >= ?";
+        List<Map<String, Object>> re = jt.queryForList(sql, n);
+        return  re;
+    }
+
     public String produceStringProjection(List<String> arr) {
         StringBuilder init = new StringBuilder(arr.get(0));
         for (int i = 1; i < arr.size(); i++) {
