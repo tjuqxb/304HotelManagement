@@ -280,7 +280,7 @@ do '    declare
                                insert into rm_record
                                values (101, 100 + (SELECT random()*(25-10)+10), v_idx, null),
                                       (102, 120 + (SELECT random()*(25-10)+10), v_idx, null),
-                                   (103, 135 + (SELECT random()*(25-10)+10), v_idx, null),
+                                      (103, 135 + (SELECT random()*(25-10)+10), v_idx, null),
                                       (104, 115 + (SELECT random()*(25-10)+10), v_idx, null),
                                       (105, 105 + (SELECT random()*(25-10)+10), v_idx, null);
                            end loop;
