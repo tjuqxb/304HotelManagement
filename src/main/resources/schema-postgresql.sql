@@ -125,18 +125,6 @@ CREATE TABLE rm_record(
     FOREIGN KEY (last_req) REFERENCES reservation_req(rid) ON DELETE SET NULL
 );
 
-INSERT INTO rm_record VALUES
-(101,100,current_date + 1,00001),
-(102,125,current_date + 2,00002),
-(103,100,current_date + 3,00003),
-(104,125,current_date + 4,00004),
-(104,125,current_date + 9,00005),
-(104,125,current_date + 10,00006),
-(105,125,current_date + 9,00007),
-(105,125,current_date + 10,00008),
-(105,125,current_date + 11,00009);
-
-
 CREATE TABLE reserve_with(
     rid INT,
     guest_id INT,
@@ -188,15 +176,6 @@ FOREIGN KEY (sid) REFERENCES receptionist(sid),
 FOREIGN KEY (rm_number) REFERENCES room(rm_number)
 );
 
-INSERT INTO housekeep_record VALUES
-(00001,current_date ,'09:00',00001, 101),
-(00002,current_date + 1,'10:00',00002, 102),
-(00003,current_date + 2,'11:00',00003, 103),
-(00004,current_date + 3,'12:00',00004, 104),
-(00005,current_date + 4,'14:00',00005, 105);
-
-
-
 CREATE TABLE bill(
     bill_num INT NOT NULL,
     bill_date DATE NOT NULL,
@@ -208,12 +187,7 @@ CREATE TABLE bill(
 );
 
 
-INSERT INTO bill VALUES
-(00001,current_date + 3,101, current_date + 1),
-(00002,current_date + 2,102, current_date + 2),
-(00003,current_date + 5,103, current_date + 3),
-(00004,current_date + 10,104, current_date + 9),
-(00005,current_date + 10,105, current_date + 10);
+
 
 CREATE TABLE services(
     service_id INT,
@@ -286,6 +260,13 @@ do '    declare
                            end loop;
                   end; 'LANGUAGE PLPGSQL;
 
+INSERT INTO bill VALUES
+(00001,current_date + 3,101, current_date + 1),
+(00002,current_date + 2,102, current_date + 2),
+(00003,current_date + 5,103, current_date + 3),
+(00004,current_date + 10,104, current_date + 9),
+(00005,current_date + 10,105, current_date + 10);
+
 INSERT INTO reservation_req VALUES
 (000010,00001,'2020-11-22','09:00',1,1,current_date + 33,101),
 (000011,00002,'2020-11-23','10:00',1,1,current_date + 34,102),
@@ -293,6 +274,13 @@ INSERT INTO reservation_req VALUES
 (000013,00004,'2020-11-25','12:00',1,1,current_date + 36,104),
 (000014,00004,'2020-11-25','12:00',1,1,current_date + 37,104),
 (000015,00005,'2020-11-25','12:00',1,1,current_date + 41,105);
+
+INSERT INTO housekeep_record VALUES
+(00001,current_date ,'09:00',00001, 101),
+(00002,current_date + 1,'10:00',00002, 102),
+(00003,current_date + 2,'11:00',00003, 103),
+(00004,current_date + 3,'12:00',00004, 104),
+(00005,current_date + 4,'14:00',00005, 105);
 
 UPDATE rm_record
 SET last_req = 10
