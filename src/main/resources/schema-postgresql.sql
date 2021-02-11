@@ -103,18 +103,6 @@ CREATE TABLE reservation_req(
     FOREIGN KEY (guest_id) REFERENCES reservation_guest(guest_id)
 );
 
-INSERT INTO reservation_req VALUES
-(00001,00001,current_date ,'09:00',1,1,current_date + 1,101),
-(00002,00002,current_date + 1,'10:00',1,1,current_date + 2,102),
-(00003,00003,current_date + 2,'11:00',1,1,current_date + 3,103),
-(00004,00004,current_date + 3,'12:00',1,1,current_date + 4,104),
-(00005,00004,current_date + 3,'12:00',1,1,current_date + 9,104),
-(00006,00004,current_date + 3,'12:00',1,1,current_date + 10,104),
-(00007,00005,current_date + 4,'13:00',1,1,current_date  + 9,105),
-(00008,00005,current_date + 4,'13:00',1,1,current_date + 11,105),
-(00009,00005,current_date + 4,'13:00',1,1,current_date + 12,105);
-
-
 CREATE TABLE rm_record(
     rm_number INT NOT NULL,
     price INT NOT NULL,
@@ -133,13 +121,6 @@ CREATE TABLE reserve_with(
     FOREIGN KEY (guest_id) REFERENCES in_house_guest(guest_id) ON DELETE CASCADE
 );
 
-
-INSERT INTO reserve_with VALUES
-(00001,00006),
-(00002,00007),
-(00003,00008),
-(00004,00009),
-(00005,00010);
 
 CREATE TABLE hotel_staff(
     sid INT,
