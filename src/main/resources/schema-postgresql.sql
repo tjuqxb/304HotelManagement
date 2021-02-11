@@ -268,12 +268,12 @@ INSERT INTO charges VALUES
 (00005,00005,'water_bottle');
 
 INSERT INTO reservation_req VALUES
-(000010,00001,'2020-11-22','09:00',1,1,current_date + 33,101),
-(000011,00002,'2020-11-23','10:00',1,1,current_date + 34,102),
-(000012,00003,'2020-11-24','11:00',1,1,current_date + 35,103),
-(000013,00004,'2020-11-25','12:00',1,1,current_date + 36,104),
-(000014,00004,'2020-11-25','12:00',1,1,current_date + 37,104),
-(000015,00005,'2020-11-25','12:00',1,1,current_date + 41,105);
+(000010,00001,'2020-11-22','09:00',1,1,current_date + 3,101),
+(000011,00002,'2020-11-23','10:00',1,1,current_date + 4,102),
+(000012,00003,'2020-11-24','11:00',1,1,current_date + 5,103),
+(000013,00004,'2020-11-25','12:00',1,1,current_date + 6,104),
+(000014,00004,'2020-11-25','12:00',1,1,current_date + 7,104),
+(000015,00005,'2020-11-25','12:00',1,1,current_date + 11,105);
 
 INSERT INTO housekeep_record VALUES
 (00001,current_date ,'09:00',00001, 101),
@@ -284,23 +284,23 @@ INSERT INTO housekeep_record VALUES
 
 UPDATE rm_record
 SET last_req = 10
-WHERE rm_number = 101 AND date = current_date + 33;
+WHERE rm_number = 101 AND date = current_date + 3;
 
 UPDATE rm_record
 SET last_req = 11
-WHERE rm_number = 102 AND date = current_date + 34;
+WHERE rm_number = 102 AND date = current_date + 4;
 
 UPDATE rm_record
 SET last_req = 12
-WHERE rm_number = 103 AND date = current_date + 35;
+WHERE rm_number = 103 AND date = current_date + 5;
 
 UPDATE rm_record
 SET last_req = 13
-WHERE rm_number = 104 AND date = current_date + 36;
+WHERE rm_number = 104 AND date = current_date + 6;
 
 UPDATE rm_record
 SET last_req = 14
-WHERE rm_number = 104 AND date = current_date + 37;
+WHERE rm_number = 104 AND date = current_date + 7;
 
 UPDATE rm_record
 SET last_req = 15
@@ -308,11 +308,11 @@ WHERE rm_number = 105 AND date = current_date + 41;
 
 
 INSERT INTO checked_in_out_rec VALUES
-(3,current_date + 33, '08:00:00', NULL, NULL,1,NULL, 1, 101),
-(4,current_date + 34, '08:00:00', NULL, NULL,1,NULL, 2, 102),
-(5,current_date + 35, '08:00:00', NULL, NULL,1,NULL, 3, 103),
-(6,current_date + 36, '08:00:00', NULL, NULL,1,NULL, 4, 104),
-(7,current_date + 41, '08:00:00', NULL, NULL,1,NULL, 5, 105);
+(3,current_date + 3, '08:00:00', NULL, NULL,1,NULL, 1, 101),
+(4,current_date + 4, '08:00:00', NULL, NULL,1,NULL, 2, 102),
+(5,current_date + 5, '08:00:00', NULL, NULL,1,NULL, 3, 103),
+(6,current_date + 6, '08:00:00', NULL, NULL,1,NULL, 4, 104),
+(7,current_date + 11, '08:00:00', NULL, NULL,1,NULL, 5, 105);
 
 
 
