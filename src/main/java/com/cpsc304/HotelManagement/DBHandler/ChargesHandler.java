@@ -1,24 +1,21 @@
 package com.cpsc304.HotelManagement.DBHandler;
 
-import com.cpsc304.HotelManagement.Model.Guest;
-import com.cpsc304.HotelManagement.Model.ReservationGuest;
+import com.cpsc304.HotelManagement.Model.Charges;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component
-public class GuestHandler {
+public class ChargesHandler {
+
     @Autowired
     JdbcTemplate jt;
-
-    public Integer insertGuest(Guest g) {
+    public Integer InsertCharge(Charges c) {
         // auto index
-        String sql1 = "SELECT MAX(guest_id) FROM guest";
+        String sql1 = "SELECT MAX(cid) FROM charges";
         List<Map<String, Object>> ret = jt.queryForList(sql1);
         Integer id = (Integer) ret.get(0).get("max");
         if (id == null) {
@@ -26,17 +23,15 @@ public class GuestHandler {
         } else {
             id = id + 1;
         }
-        String sql = "INSERT INTO guest VALUES (?, ?, ?);";
-        jt.update(sql, id, g.getName(), g.getPhone());
+        String sql = "INSERT INTO charges VALUES (?, ?, ?);";
+        jt.update(sql, c.getBillNum(), id, c.getServices());
         return id;
     }
 
-    public List<Map<String, Object>> getAllGuests() {
-        String sql = "SELECT * FROM guest;";
+    public List<Map<String, Object>> getAllCharges() {
+        String sql = "SELECT * FROM charges;";
         List<Map<String, Object>> ret = jt.queryForList(sql);
         return ret;
     }
-
-
 
 }
