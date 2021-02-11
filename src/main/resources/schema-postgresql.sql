@@ -213,13 +213,6 @@ CREATE TABLE charges(
     FOREIGN KEY (service_name) REFERENCES services(service_name)
 );
 
-INSERT INTO charges VALUES
-(00001,00001, 'partial_clean'),
-(00002,00002, 'lost_key'),
-(00003,00003, 'lost_towel'),
-(00004,00004,'lost_towel'),
-(00005,00005,'water_bottle');
-
 CREATE TABLE checked_in_out_rec(
     ck_id INT,
     in_date DATE NOT NULL,
@@ -266,6 +259,13 @@ INSERT INTO bill VALUES
 (00003,current_date + 5,103, current_date + 3),
 (00004,current_date + 10,104, current_date + 9),
 (00005,current_date + 10,105, current_date + 10);
+
+INSERT INTO charges VALUES
+(00001,00001, 'partial_clean'),
+(00002,00002, 'lost_key'),
+(00003,00003, 'lost_towel'),
+(00004,00004,'lost_towel'),
+(00005,00005,'water_bottle');
 
 INSERT INTO reservation_req VALUES
 (000010,00001,'2020-11-22','09:00',1,1,current_date + 33,101),
