@@ -104,15 +104,15 @@ CREATE TABLE reservation_req(
 );
 
 INSERT INTO reservation_req VALUES
-(00001,00001,'2020-10-22','09:00',1,1,'2020-10-23',101),
-(00002,00002,'2020-10-23','10:00',1,1,'2020-10-24',102),
-(00003,00003,'2020-10-24','11:00',1,1,'2020-10-25',103),
-(00004,00004,'2020-10-25','12:00',1,1,'2020-10-26',104),
-(00005,00004,'2020-10-25','12:00',1,1,'2020-10-31',104),
-(00006,00004,'2020-10-25','12:00',1,1,'2020-11-01',104),
-(00007,00005,'2020-10-26','13:00',1,1,'2020-10-31',105),
-(00008,00005,'2020-10-26','13:00',1,1,'2020-11-01',105),
-(00009,00005,'2020-10-26','13:00',1,1,'2020-11-02',105);
+(00001,00001,current_date ,'09:00',1,1,current_date + 1,101),
+(00002,00002,current_date + 1,'10:00',1,1,current_date + 2,102),
+(00003,00003,current_date + 2,'11:00',1,1,current_date + 3,103),
+(00004,00004,current_date + 3,'12:00',1,1,current_date + 4,104),
+(00005,00004,current_date + 3,'12:00',1,1,current_date + 9,104),
+(00006,00004,current_date + 3,'12:00',1,1,current_date + 10,104),
+(00007,00005,current_date + 4,'13:00',1,1,current_date  + 9,105),
+(00008,00005,current_date + 4,'13:00',1,1,current_date + 11,105),
+(00009,00005,current_date + 4,'13:00',1,1,current_date + 12,105);
 
 
 CREATE TABLE rm_record(
@@ -126,15 +126,15 @@ CREATE TABLE rm_record(
 );
 
 INSERT INTO rm_record VALUES
-(101,100,'2020-10-23',00001),
-(102,125,'2020-10-24',00002),
-(103,100,'2020-10-25',00003),
-(104,125,'2020-10-26',00004),
-(104,125,'2020-10-31',00005),
-(104,125,'2020-11-01',00006),
-(105,125,'2020-10-31',00007),
-(105,125,'2020-11-01',00008),
-(105,125,'2020-11-02',00009);
+(101,100,current_date + 1,00001),
+(102,125,current_date + 2,00002),
+(103,100,current_date + 3,00003),
+(104,125,current_date + 4,00004),
+(104,125,current_date + 9,00005),
+(104,125,current_date + 10,00006),
+(105,125,current_date + 9,00007),
+(105,125,current_date + 10,00008),
+(105,125,current_date + 11,00009);
 
 
 CREATE TABLE reserve_with(
@@ -189,11 +189,11 @@ FOREIGN KEY (rm_number) REFERENCES room(rm_number)
 );
 
 INSERT INTO housekeep_record VALUES
-(00001,'2020-10-22','09:00',00001, 101),
-(00002,'2020-10-23','10:00',00002, 102),
-(00003,'2020-10-24','11:00',00003, 103),
-(00004,'2020-10-25','12:00',00004, 104),
-(00005,'2020-10-26','14:00',00005, 105);
+(00001,current_date ,'09:00',00001, 101),
+(00002,current_date + 1,'10:00',00002, 102),
+(00003,current_date + 2,'11:00',00003, 103),
+(00004,current_date + 3,'12:00',00004, 104),
+(00005,current_date + 4,'14:00',00005, 105);
 
 
 
@@ -268,8 +268,8 @@ CREATE TABLE checked_in_out_rec(
 
 
 INSERT INTO checked_in_out_rec VALUES
-(1,'2020-11-01', '08:00:00', NULL, NULL,1,NULL, 4, 104),
-(2,'2020-10-31', '08:00:00', NULL, NULL,1,NULL, 5, 105);
+(1,current_date + 10, '08:00:00', NULL, NULL,1,NULL, 4, 104),
+(2,current_date + 9, '08:00:00', NULL, NULL,1,NULL, 5, 105);
 
 
 do '    declare
@@ -287,44 +287,44 @@ do '    declare
                   end; 'LANGUAGE PLPGSQL;
 
 INSERT INTO reservation_req VALUES
-(000010,00001,'2020-11-22','09:00',1,1,'2020-12-23',101),
-(000011,00002,'2020-11-23','10:00',1,1,'2020-12-24',102),
-(000012,00003,'2020-11-24','11:00',1,1,'2020-12-25',103),
-(000013,00004,'2020-11-25','12:00',1,1,'2020-12-26',104),
-(000014,00004,'2020-11-25','12:00',1,1,'2020-12-27',104),
-(000015,00005,'2020-11-25','12:00',1,1,'2020-12-31',105);
+(000010,00001,'2020-11-22','09:00',1,1,current_date + 33,101),
+(000011,00002,'2020-11-23','10:00',1,1,current_date + 34,102),
+(000012,00003,'2020-11-24','11:00',1,1,current_date + 35,103),
+(000013,00004,'2020-11-25','12:00',1,1,current_date + 36,104),
+(000014,00004,'2020-11-25','12:00',1,1,current_date + 37,104),
+(000015,00005,'2020-11-25','12:00',1,1,current_date + 41,105);
 
 UPDATE rm_record
 SET last_req = 10
-WHERE rm_number = 101 AND date = '2020-12-23';
+WHERE rm_number = 101 AND date = current_date + 33;
 
 UPDATE rm_record
 SET last_req = 11
-WHERE rm_number = 102 AND date = '2020-12-24';
+WHERE rm_number = 102 AND date = current_date + 34;
 
 UPDATE rm_record
 SET last_req = 12
-WHERE rm_number = 103 AND date = '2020-12-25';
+WHERE rm_number = 103 AND date = current_date + 35;
 
 UPDATE rm_record
 SET last_req = 13
-WHERE rm_number = 104 AND date = '2020-12-26';
+WHERE rm_number = 104 AND date = current_date + 36;
 
 UPDATE rm_record
 SET last_req = 14
-WHERE rm_number = 104 AND date = '2020-12-27';
+WHERE rm_number = 104 AND date = current_date + 37;
 
 UPDATE rm_record
 SET last_req = 15
-WHERE rm_number = 105 AND date = '2020-12-31';
+WHERE rm_number = 105 AND date = current_date + 41;
 
 
 INSERT INTO checked_in_out_rec VALUES
-(3,'2020-12-23', '08:00:00', NULL, NULL,1,NULL, 1, 101),
-(4,'2020-12-24', '08:00:00', NULL, NULL,1,NULL, 2, 102),
-(5,'2020-12-25', '08:00:00', NULL, NULL,1,NULL, 3, 103),
-(6,'2020-12-26', '08:00:00', NULL, NULL,1,NULL, 4, 104),
-(7,'2020-12-31', '08:00:00', NULL, NULL,1,NULL, 5, 105);
+(3,current_date + 33, '08:00:00', NULL, NULL,1,NULL, 1, 101),
+(4,current_date + 34, '08:00:00', NULL, NULL,1,NULL, 2, 102),
+(5,current_date + 35, '08:00:00', NULL, NULL,1,NULL, 3, 103),
+(6,current_date + 36, '08:00:00', NULL, NULL,1,NULL, 4, 104),
+(7,current_date + 41, '08:00:00', NULL, NULL,1,NULL, 5, 105);
 
 
 
