@@ -209,11 +209,11 @@ CREATE TABLE bill(
 
 
 INSERT INTO bill VALUES
-(00001,'2020-10-25',101, '2020-10-23'),
-(00002,'2020-10-24',102, '2020-10-24'),
-(00003,'2020-10-27',103, '2020-10-25'),
-(00004,'2020-11-01',104,'2020-10-31'),
-(00005,'2020-11-01',105,'2020-11-01');
+(00001,current_date + 3,101, current_date + 1),
+(00002,current_date + 2,102, current_date + 2),
+(00003,current_date + 5,103, current_date + 3),
+(00004,current_date + 10,104, current_date + 9),
+(00005,current_date + 10,105, current_date + 10);
 
 CREATE TABLE services(
     service_id INT,
